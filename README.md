@@ -12,7 +12,7 @@
 
 ## Concept
 
-
+The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki
 
 ## Data
 
