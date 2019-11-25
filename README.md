@@ -1,5 +1,5 @@
 # frontend-data
-[## _Check the live demo out here_](https://countnick.github.io/frontend-data/)
+## [ _Check the live demo out here_](https://countnick.github.io/frontend-data/)
 
 ![frontend-data_screenshot](https://i.imgur.com/EgGBWwQ.png)
 
@@ -10,7 +10,7 @@
 * ### [_Installation_](#Installation)
 
 
-## Concept
+## Concept :pencil2:
 
 The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki
 
@@ -47,7 +47,7 @@ SELECT ?cho ?title ?typeLabel ?cultHer WHERE {
 }
 ```
 
-## Installation
+## Installation :cd:
 
 ### Prerequisites
 
