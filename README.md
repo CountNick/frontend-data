@@ -5,9 +5,9 @@
 
 ## Table of contents 
 
-* [### _Concept_](#Concept)
-* [### _Data_](#Data)
-* [### _Installation_](#Installation)
+### * [_Concept_](#Concept)
+### * [_Data_](#Data)
+### * [_Installation_](#Installation)
 
 
 ## Concept
