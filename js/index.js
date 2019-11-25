@@ -42,21 +42,21 @@ d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
     })
     .then(data => transformData(data))
     .then(transformData => nestData(transformData))
-    .then(nestData => cleanData(nestData))
-    .then(cleanData => renderGraph(cleanData))
+    .then(nestData => renderGraph(nestData))
+    
 
 
 function transformData(data){
         //map over data objects and make new array filled with modified objects
     const objectsArray = data
         .map(object => {
-                
-            object.amount = parseInt(object.amount.value)
-            object.type = object.typeLabel.value
-            object.origin = object.herkomstSuperLabel.value
+            return{
 
-            return object
+            origin: object.herkomstSuperLabel.value,
+            type: object.typeLabel.value,
+            amount: parseInt(object.amount.value)
 
+            }
         })
         //console.log("objectsarray: ", objectsArray)
         return objectsArray
@@ -94,219 +94,174 @@ function nestData(objectsArray){
 
     //console.log(typeof(nestedData))
 
-
+    
     
     return objectsArray
-}
-
-function cleanData(nestedData){
-    //console.log("Clean data: ", nestedData)
-
-    let result = []
-    
-    Object.entries(nestedData)
-    	.forEach(([key, propValue]) => { 		
-            result[key] = propValue.values
-           // console.log("Result: ", result)
-      })
-      
-      //console.log("Result: ", result)
-
-
-    //   result.forEach(element => {
-          
-    //     console.log("ForEach: ", element)
-
-
-    
-    // })
-
-    //   for (let i = 0; i < result.length; i++) {
-    //     console.log("loop: ", result[0][i].amount, result[1][i].amount, result[2][i].amount, result[3][i].amount, result[4][i].amount)
-    //   }
-
- //   console.log("MUM", d3.stack(nestedData))
-
- //console.log("gwbn leip", nestedData)
-  
-  var stack = d3.stack()
-    .keys([d => {return d.origin}])
-  	.value(d => {return d.amount})
-    .order(d3.stackOrderNone)
-    .offset(d3.stackOffsetNone);
-
-var series = stack(nestedData);
-  
-  //console.log("ff", series)
-  
-  //console.log(stack(nestedData))
-  
-    return series
-
 }
 
 
 
 function renderGraph(result){
 
-     console.log( "TTT", result)
+        //select the svg element in index.html
+        const svg = d3.select('svg');
+        //sets height and width to height and width of svg element
+        const width = +svg.attr('width');
+        const height = +svg.attr('height');
+        //sets x and y values to the values of amount and origin
+        const xValue = d => d.amount;
+        const yValue = d => d.origin;
+        const margin = { top: 40, right: 30, bottom: 150, left: 120 };
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
+      
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(result, xValue)])
+            .range([0, innerWidth])
+            .nice();
 
-    const svg = d3.select('svg');
-    const svgContainer = d3.select('#container');
+      
+        const yScale = d3.scalePoint()
+            .domain(result.map(yValue))
+            .range([0, innerHeight])
+            .padding(0.7);
+      
+      
+        const g = svg.append('g')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      
+        g.append('g')
+            .call(d3.axisLeft(yScale)
+                .tickSize(-innerWidth))
+              .append('text')
+              .attr('fill', 'black');
+              //.attr('y', innerHeight /2)
+              //.text('Continenten');
+      
+        g.append('g')
+            .call(d3.axisBottom(xScale)
+                .tickSize(-innerHeight))
+              .attr('transform', `translate(0, ${innerHeight})`)
+            .append('text')
+              .attr('y', 60)
+              .attr('x', innerWidth / 2)
+              .attr('fill', 'black')
+              .text('Aantal pijpen');
     
-    const margin = 80;
-    const width = 1000 - 2 * margin;
-    const height = 500 - 2 * margin;
+        //makes an ordinal color scale for each type
+        const color = d3.scaleOrdinal()
+            .domain(["hasjpijpen", "tabakspijpen", "waterpijpen", "pijpen (rookgerei)", "opiumpijpen" ])
+            .range([ "#FF0047", "#FF8600", "#6663D5", "#FFF800", "#29FF3E"]);
+      
 
-    const chart = svg.append('g')
-      .attr('transform', `translate(${margin}, ${margin})`);
+        const tooltip = d3.select("body").append("div").attr("class", "toolTip");
+        
 
-    const xScale = d3.scaleBand()
-      .range([0, width])
-      .domain(result.map((d) => d.key))
-      .padding(0.4)
+                
+        drawCircles(g, result, yScale, xScale, yValue, xValue, color, tooltip)
+
+        updateChart(g, result, yScale, xScale, yValue, xValue, color, tooltip)
+
+
+        
+        //got his piece of code from Ramon, who got it from Laurens' code at https://beta.vizhub.com/Razpudding/921ee6d44b634067a2649f738b6a3a6e
+        const legend = svg.selectAll(".legend")
+                .data(color.domain())
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; })
+                .on("mouseenter", d => {
+                    console.log(d)
+                });
+                legend.append("rect")
+                .attr("x", innerWidth /3)
+                .attr('y', innerHeight+70)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", color)
+                legend.append("text")
+                .attr("x", innerWidth / 3)
+                .attr("y", innerHeight +79)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text( d => { return d; })
+
+        		function showAll(){
+                    d3.selectAll('circle')
+                    .classed("hide", false)
+                    .attr("r", getDotSize())
+                }
+
     
-    const yScale = d3.scaleLinear()
-      .range([height, 0])
-      .domain([0, d3.max(result, d => d3.max(d, d => d[1]))])
-    	.nice();
+        //sets the graph title
+        g.append('text')
+            .attr('y', -10)
+              .text('Aantal rookgerei naar type en continent')
 
-  console.log(yScale.domain())
-  
-    // vertical grid lines
-    // const makeXLines = () => d3.axisBottom()
-    //   .scale(xScale)
-
-    const makeYLines = () => d3.axisLeft()
-      .scale(yScale)
-
-    chart.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
-
-    chart.append('g')
-      .call(d3.axisLeft(yScale));
-
-    // vertical grid lines
-    // chart.append('g')
-    //   .attr('class', 'grid')
-    //   .attr('transform', `translate(0, ${height})`)
-    //   .call(makeXLines()
-    //     .tickSize(-height, 0, 0)
-    //     .tickFormat('')
-    //   )
-
-    chart.append('g')
-      .attr('class', 'grid')
-      .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')
-      )
-
-    const barGroups = chart.selectAll()
-      .data(result)
-      .enter()
-      .append('g')
-
-    barGroups
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (g) => xScale(g.origin))
-      .attr('y', (g) => yScale(g.amount))
-      .attr('height', (g) => height - yScale(g.amount))
-      .attr('width', xScale.bandwidth())
-//       .on('mouseenter', function (actual, i) {
-//         d3.selectAll('.value')
-//           .attr('opacity', 0)
-
-//         d3.select(this)
-//           .transition()
-//           .duration(300)
-//           .attr('opacity', 0.6)
-//           .attr('x', (a) => xScale(a.origin) - 5)
-//           .attr('width', xScale.bandwidth() + 10)
-
-//         const y = yScale(actual.amount)
-
-//         line = chart.append('line')
-//           .attr('id', 'limit')
-//           .attr('x1', 0)
-//           .attr('y1', y)
-//           .attr('x2', width)
-//           .attr('y2', y)
-
-//         barGroups.append('text')
-//           .attr('class', 'divergence')
-//           .attr('x', (a) => xScale(a.origin) + xScale.bandwidth() / 2)
-//           .attr('y', (a) => yScale(a.amount) + 30)
-//           .attr('fill', 'white')
-//           .attr('text-anchor', 'middle')
-//           .text((a, idx) => {
-//             const divergence = (a.amount - actual.amount).toFixed(1)
-            
-//             let text = ''
-//             if (divergence > 0) text += '+'
-//             text += `${divergence}%`
-
-//             return idx !== i ? text : '';
-//           })
-
-//       })
-//       .on('mouseleave', function () {
-//         d3.selectAll('.value')
-//           .attr('opacity', 1)
-
-//         d3.select(this)
-//           .transition()
-//           .duration(300)
-//           .attr('opacity', 1)
-//           .attr('x', (a) => xScale(a.origin))
-//           .attr('width', xScale.bandwidth())
-
-//         chart.selectAll('#limit').remove()
-//         chart.selectAll('.divergence').remove()
-//       })
-
-    // barGroups 
-    //   .append('text')
-    //   .attr('class', 'value')
-    //   .attr('x', (a) => xScale(a.origin) + xScale.bandwidth() / 2)
-    //   .attr('y', (a) => yScale(a.amount) + 30)
-    //   .attr('text-anchor', 'middle')
-    //   .text((a) => `${a.amount}%`)
-    
-    svg
-      .append('text')
-      .attr('class', 'label')
-      .attr('x', -(height / 2) - margin)
-      .attr('y', margin / 2.4)
-      .attr('transform', 'rotate(-90)')
-      .attr('text-anchor', 'middle')
-      .text('Aantal')
-
-    svg.append('text')
-      .attr('class', 'label')
-      .attr('x', width / 2 + margin)
-      .attr('y', height + margin * 1.7)
-      .attr('text-anchor', 'middle')
-      .text('Continent')
-
-    svg.append('text')
-      .attr('class', 'title')
-      .attr('x', width / 2 + margin)
-      .attr('y', 40)
-      .attr('text-anchor', 'middle')
-      .text('Aantal rookgerei naar herkomst')
-
-    svg.append('text')
-      .attr('class', 'source')
-      .attr('x', width - margin / 2)
-      .attr('y', height + margin * 1.7)
-      .attr('text-anchor', 'start')
-      .text('Source: https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/')
-  
 
 }
 
+function drawAxis(){
+
+    
+}
+
+function drawCircles(g, result, yScale, xScale, yValue, xValue, color, tooltip){
 
 
+        //draw the circles in the graph
+        g.selectAll('circle')
+            .data(result)
+            .enter()
+            .append('circle')
+                //.transition()
+                .attr('cy', d => yScale(yValue(d)))
+                .attr('cx', d => xScale(xValue(d)))
+                .attr('r', 15)
+                .style('fill', d => { return color(d.type) } )
+                .on("mousemove", function(d){
+                    tooltip
+                        .style("left", d3.event.pageX - 50 + "px")
+                        .style("top", d3.event.pageY - 70 + "px")
+                        .style("display", "inline-block")
+                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                })
+                .on("mouseout", function(){ tooltip.style("display", "none");})
+
+    
+}
+
+function updateChart(g, result, yScale, xScale, yValue, xValue, color, tooltip){
+
+        //source: https://stackoverflow.com/questions/52119854/d3-javascript-filter-data-according-to-input
+        d3.select("#selectButton").on("change", function(){
+            let dataFilter = result.filter(d => {return d.type == this.value})
+            console.log(dataFilter)
+            
+            //unfiltered circles
+            g.selectAll('circle')
+            .remove()
+            g.selectAll('circle').data(dataFilter)
+            .enter()
+            .append('circle')
+              .attr('cy', d => yScale(yValue(d)))
+              .attr('cx', d => xScale(xValue(d)))
+              .attr('r', 15)
+              .style('fill', d => { return color(d.type) } )
+              .on("mousemove", function(d){
+                  tooltip
+                    .style("left", d3.event.pageX - 50 + "px")
+                    .style("top", d3.event.pageY - 70 + "px")
+                    .style("display", "inline-block")
+                    .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+              })
+              .on("mouseout", function(d){ tooltip.style("display", "none");})
+              .transition().duration(1000).style("opacity", 1)
+    
+        })
+}
+
+function drawLegend(){
+
+
+}

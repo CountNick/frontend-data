@@ -1,0 +1,43 @@
+
+   circle {
+  
+    stroke: black;
+    
+  }
+  
+  text{
+  
+    font-size: 2em;
+    font-family: sans-serif
+  }
+
+  .legend text{
+
+    font-size: 1em;
+
+  }
+
+  .legend rect{
+
+    opacity: 1;
+
+  }
+
+  .toolTip {
+    position: absolute;
+    display: none;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    background-color: ghostwhite;
+    border-radius: .2rem;
+    padding: 14px;
+    text-align: center;
+  }
+  
+
+  select{
+    display: flex;
+    justify-content: flex-end;
+  }
+
