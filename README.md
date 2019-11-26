@@ -1,4 +1,4 @@
-# frontend-data
+# frontend-data📊
 ## [ _Check the live demo out here_](https://countnick.github.io/frontend-data/)
 
 ![frontend-data_screenshot](https://i.imgur.com/EgGBWwQ.png)
@@ -28,23 +28,25 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-SELECT ?cho ?title ?typeLabel ?cultHer WHERE {
-
+SELECT ?herkomstSuper ?herkomstSuperLabel ?typeLabel (COUNT(?cho) AS ?amount) 
+WHERE {
+  # geef ruilmiddelen
   <https://hdl.handle.net/20.500.11840/termmaster14607> skos:narrower* ?type .
   ?type skos:prefLabel ?typeLabel .
+
+  # geef de continenten
+  <https://hdl.handle.net/20.500.11840/termmaster2> skos:narrower ?herkomstSuper .
+  ?herkomstSuper skos:prefLabel ?herkomstSuperLabel .
+
+  # geef per continent de onderliggende geografische termen
+  ?herkomstSuper skos:narrower* ?herkomstSub .
+  ?herkomstSub skos:prefLabel ?herkomstSubLabel .
+
+  # geef objecten bij de onderliggende geografische termen
+  ?cho dct:spatial ?herkomstSub .
+  ?cho edm:object ?type . 
   
-  
-  ?placeNameLink skos:prefLabel ?cultHer.
-  ?cho edm:object ?type .
-  ?cho dc:title ?title .
-  #?cho dct:medium ?materiaalLink.
-  #?materiaalLink skos:broader ?materiaalBroad.
-  #?materiaalBroad skos:prefLabel ?materiaal.
-  
-  VALUES ?cultHer {"Afrikaans" "Europees" "Amerikaans" "Aziatisch" "Oceanisch" "Euraziatisch" "Circumpolaire volken-culturen-stijlen-perioden"}
-  
-  VALUES ?typeLabel{ "waterpijpen" "opiumpijpen" "hasjpijpen" "tabakspijpen" }
-}
+} 
 ```
 
 ## Installation :cd:
