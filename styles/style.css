@@ -2,13 +2,31 @@
    circle {
   
     stroke: black;
-    
+    opacity: 0.5;
+    -webkit-transition: opacity .15s ease-in-out;
+    -moz-transition: opacity .15s ease-in-out;
+    -ms-transition: opacity .15s ease-in-out;
+    -o-transition: opacity .15s ease-in-out;
+    transition: opacity .15s ease-in-out;
+  }
+
+  circle:hover{
+      opacity: 1;
+      -webkit-transition: opacity .15s ease-in-out;
+      -moz-transition: opacity .15s ease-in-out;
+      -ms-transition: opacity .15s ease-in-out;
+      -o-transition: opacity .15s ease-in-out;
+      transition: opacity .15s ease-in-out;
   }
   
   text{
   
     font-size: 2em;
-    font-family: sans-serif
+    font-family: sans-serif;
+  }
+
+  h4{
+      font-family: sans-serif;
   }
 
   .legend text{
@@ -39,5 +57,13 @@
   select{
     display: flex;
     justify-content: flex-end;
+    background-color: beige;
+    font-size: 1.3rem;
+    color: black;
+    border: none;
+  }
+
+  .filter{
+      
   }
 

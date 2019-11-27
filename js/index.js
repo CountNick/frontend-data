@@ -1,8 +1,6 @@
-//console.log(d3.symbol())
-
 //puts the endpoint in a variable
 const url ="https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-36/sparql"
-
+//puts the query in a variable
 const query = `
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -43,8 +41,6 @@ d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
     .then(data => transformData(data))
     .then(transformData => nestData(transformData))
     .then(nestData => renderGraph(nestData))
-    
-
 
 function transformData(data){
         //map over data objects and make new array filled with modified objects
@@ -59,7 +55,7 @@ function transformData(data){
 
             }
         })
-        //console.log("objectsarray: ", objectsArray)
+
         return objectsArray
 }
 
@@ -67,40 +63,10 @@ function nestData(objectsArray){
 
     let nestedData = d3.nest()
     .key(continent => { return continent.origin })
-    // .rollup(count => { return {"length": count.length, "total_amount": d3.sum(count, d => { return parseFloat(d.amount)})}})
-    // .rollup(leaves => {
-    //     leaves.forEach(d => {
-    //         console.log("amount: ", d.amount)
-    //         return d.amount
-    //     })
-    // })
-    // .rollup( d => {
-    //     return d
-    //         .map(d => {return d.amount})
-    // })
-    // .rollup(d => {
-    //     return {
-    //         amount: d.map(d => d.amount),
-    //         origin: d.origin
-    //     }
-    // })
     .entries(objectsArray);
-
-    // for (let continent of nestedData){
-    //     continent.types =  continent.values
-    //     //console.log("GGGGG", continent.amount)
-    //     //console.log(continentObject)
-    // }
-    //console.log("wemwem", nestedData)
-
-    //console.log(typeof(nestedData))
-
-    
     
     return objectsArray
 }
-
-
 
 function renderGraph(result){
 
@@ -115,14 +81,19 @@ function renderGraph(result){
         const margin = { top: 40, right: 30, bottom: 150, left: 120 };
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
+        //makes an ordinal color scale for each type
+        const color = d3.scaleOrdinal()
+            .domain(["hasjpijpen", "tabakspijpen", "waterpijpen", "pijpen (rookgerei)", "opiumpijpen" ])
+            .range([ "#FF0047", "#FF8600", "#6663D5", "#FFF800", "#29FF3E"]);
+        const tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-
+        //sets the xScale with the values from d.amount
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(result, xValue)])
             .range([0, innerWidth])
             .nice();
 
-      
+        //for plotting the dots on the yaxis
         const yScale = d3.scalePoint()
             .domain(result.map(yValue))
             .range([0, innerHeight])
@@ -131,26 +102,16 @@ function renderGraph(result){
       
         const g = svg.append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-        const circle = g.selectAll('circle')
           
 
-//console.log(circle)
-      
+        //sets the y axis
         g.append('g')
             .call(d3.axisLeft(yScale)
                 .tickSize(-innerWidth))
               .append('text')
               .attr('fill', 'black');
-              //.attr('y', innerHeight /2)
-              //.text('Continenten');
-
-
-        d3.selectAll('.tick text')
-            .on('click', d => {
-                console.log(d)
-            });
       
+        //sets the bottom axis
         g.append('g')
             .call(d3.axisBottom(xScale)
                 .tickSize(-innerHeight))
@@ -160,67 +121,85 @@ function renderGraph(result){
               .attr('x', innerWidth / 2)
               .attr('fill', 'black')
               .text('Aantal pijpen');
-    
-        //makes an ordinal color scale for each type
-        const color = d3.scaleOrdinal()
-            .domain(["hasjpijpen", "tabakspijpen", "waterpijpen", "pijpen (rookgerei)", "opiumpijpen" ])
-            .range([ "#FF0047", "#FF8600", "#6663D5", "#FFF800", "#29FF3E"]);
-      
 
-        const tooltip = d3.select("body").append("div").attr("class", "toolTip");
+        //draw the circles on the chart
+        drawCircles();
+        drawLegend();
         
-        drawCircles()
-        
-        function selectionChanged() {
-            let dataFilter = result.filter(d => {return d.type == this.value})
-            
-            //console.log('Data word veranderd naar: ', this.value)
-            console.log('DataFilter: ', dataFilter)
+        //initialize select button, and fire update function when changed
+        d3.select("#selectButton")
+            .on("change", selectionChanged);
 
-            let circles = d3.select('svg').selectAll('circle')
 
-            circles.data(circles).exit().remove()
-            
-            circle
-            .data(dataFilter)
+        //function that draws al circles with the data
+        function drawCircles(){
+            g.selectAll('circle')
+            .data(result)
             .enter()
                 .append('circle')
                     .attr('cy', d => yScale(yValue(d)))
                     .attr('cx', d => xScale(xValue(d)))
-                    .attr('r', 15)
-                    .style('fill', d => {return color(d.type)})
-        
-        }
+                    .attr('r', 0)
+                    .classed('classnaam', true)
+                    .style('fill', d => { return color(d.type) } )
+                    .on("mousemove", function(d){
+                        tooltip
+                        .style("left", d3.event.pageX - 50 + "px")
+                        .style("top", d3.event.pageY - 80 + "px")
+                        .style("display", "inline-block")
+                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                        })
+                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
+                        .attr("r", 15)
+                    }
 
-        function drawCircles(){
-        //draw the circles in the graph
-        circle
-        .data(result)
-        .enter()
-            .append('circle')
-                .attr('cy', d => yScale(yValue(d)))
-                .attr('cx', d => xScale(xValue(d)))
-                .attr('r', 15)
-                .classed('classnaam', true)
-                .style('fill', d => { return color(d.type) } )
-                .on("mousemove", function(d){
-                    tooltip
-                    .style("left", d3.event.pageX - 50 + "px")
-                    .style("top", d3.event.pageY - 80 + "px")
-                    .style("display", "inline-block")
-                    .html((d.origin) + "<br>" +d.type +": " + (d.amount));
-                    })
-                    .on("mouseout", function(){ tooltip.style("display", "none");})
-        }
+        //The update function, chazz helped me with the update function
+        function selectionChanged() {
+            
+            let dataFilter = result.filter(d => {
+                //if toon alles is selected return every type
+                if(this.value == 'toon alles'){
+                    return d.type
+                }
+                //otherwise only return the chosen type
+                else {return d.type == this.value}
+            })
+
+            // g = append("g").attr(etc)
         
+            const circle = g.selectAll('circle').data(dataFilter)
+
+            circle.enter()
+            .append("circle")
+                    .attr('cy', d => yScale(yValue(d)))
+                    .attr('cx', d => xScale(xValue(d)))
+                    .attr('r', 0)
+                    .classed('classnaam', true)
+                    .style('fill', d => { return color(d.type) } )
+                    .on("mousemove", function(d){
+                        tooltip
+                        .style("left", d3.event.pageX - 50 + "px")
+                        .style("top", d3.event.pageY - 80 + "px")
+                        .style("display", "inline-block")
+                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                        })
+                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
+                        .attr("r", 15)
                     
+            
+            circle.attr('cy', d => yScale(yValue(d)))
+            .attr('cx', d => xScale(xValue(d)))
+            .attr('r', 0)
+            .style('fill', d => { return color(d.type) } )
+            .transition().duration(1000).attr("r", 15)
+            
+            //remove unnecesary circles
+            circle.exit().transition().duration(1000).attr("r", 0).remove()
+    
+            
+        }
         
-        d3.select("#selectButton").on("change", selectionChanged)
-                
-        //drawCircles(g, result, yScale, xScale, yValue, xValue, color, tooltip)
-
-        //updateChart(g, result, yScale, xScale, yValue, xValue, color, tooltip)
-
+        function drawLegend(){
 
         //got his piece of code from Ramon, who got it from Laurens' code at https://beta.vizhub.com/Razpudding/921ee6d44b634067a2649f738b6a3a6e
         const legend = svg.selectAll(".legend")
@@ -243,53 +222,11 @@ function renderGraph(result){
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
                 .text( d => { return d; })
-
-        		function showAll(){
-                    d3.selectAll('circle')
-                    .classed("hide", false)
-                    .attr("r", getDotSize())
-                }
-
     
         //sets the graph title
         g.append('text')
             .attr('y', -10)
               .text('Aantal rookgerei naar type en continent')
 
-
+            }
 }
-
-
-
-
-// function updateChart(g, result, yScale, xScale, yValue, xValue, color, tooltip){
-
-//         //source: https://stackoverflow.com/questions/52119854/d3-javascript-filter-data-according-to-input
-//         d3.select("#selectButton").on("change", function(){
-//             let dataFilter = result.filter(d => {return d.type == this.value})
-            
-//             console.log(dataFilter)
-            
-//             //unfiltered circles
-//             g.selectAll('circle')
-//             .remove()
-//             g.selectAll('circle').data(dataFilter)
-//             .enter()
-//             .append('circle')
-//               .attr('cy', d => yScale(yValue(d)))
-//               .attr('cx', d => xScale(xValue(d)))
-//               .attr('r', 15)
-//               .style('fill', d => { return color(d.type) } )
-//               .on("mousemove", function(d){
-//                   tooltip
-//                     .style("left", d3.event.pageX - 50 + "px")
-//                     .style("top", d3.event.pageY - 70 + "px")
-//                     .style("display", "inline-block")
-//                     .html((d.origin) + "<br>" +d.type +": " + (d.amount));
-//               })
-//               .on("mouseout", function(d){ tooltip.style("display", "none");})
-//               .transition().duration(1000).style("opacity", 1)
-    
-//         })
-// }
-
