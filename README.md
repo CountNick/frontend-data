@@ -1,7 +1,7 @@
 # frontend-data📊
 ## [ _Check the live demo out here_](https://countnick.github.io/frontend-data/)
 
-![frontend-data_screenshot](https://i.imgur.com/EgGBWwQ.png)
+[![Image from Gyazo](https://i.gyazo.com/218222d8ff1cc7f9ca175998606e991a.gif)](https://gyazo.com/218222d8ff1cc7f9ca175998606e991a)
 
 ## Table of contents 
 
