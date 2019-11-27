@@ -18,8 +18,9 @@ The concept is a scattorplot which actually is a barchart that visualizes the am
 [![Image from Gyazo](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
 ## General update pattern
-<details>
 ```javascript
+<details>
+
 
         function selectionChanged() {
             
