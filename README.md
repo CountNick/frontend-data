@@ -1,7 +1,7 @@
 # frontend-data📊
 
 
-[![Image from Gyazo](https://i.gyazo.com/218222d8ff1cc7f9ca175998606e991a.gif)](https://gyazo.com/218222d8ff1cc7f9ca175998606e991a)
+[![Hovering](https://i.gyazo.com/218222d8ff1cc7f9ca175998606e991a.gif)](https://gyazo.com/218222d8ff1cc7f9ca175998606e991a)
 #### [ _Checkout the live demo_](https://countnick.github.io/frontend-data/)
 
 ## Table of contents 
@@ -16,7 +16,7 @@
 
 The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki. The chart features a filter function:
 
-[![Image from Gyazo](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
+[![Filtering](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
 ## General update pattern
 

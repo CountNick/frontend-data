@@ -1,5 +1,3 @@
-//console.log(d3.symbol())
-
 //puts the endpoint in a variable
 const url ="https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-36/sparql"
 //puts the query in a variable
@@ -89,13 +87,13 @@ function renderGraph(result){
             .range([ "#FF0047", "#FF8600", "#6663D5", "#FFF800", "#29FF3E"]);
         const tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-
+        //sets the xScale with the values from d.amount
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(result, xValue)])
             .range([0, innerWidth])
             .nice();
 
-      
+        //for plotting the dots on the yaxis
         const yScale = d3.scalePoint()
             .domain(result.map(yValue))
             .range([0, innerHeight])
@@ -112,14 +110,6 @@ function renderGraph(result){
                 .tickSize(-innerWidth))
               .append('text')
               .attr('fill', 'black');
-              //.attr('y', innerHeight /2)
-              //.text('Continenten');
-
-
-        d3.selectAll('.tick text')
-            .on('click', d => {
-                console.log(d)
-            });
       
         //sets the bottom axis
         g.append('g')
@@ -132,12 +122,16 @@ function renderGraph(result){
               .attr('fill', 'black')
               .text('Aantal pijpen');
 
+        //draw the circles on the chart
+        drawCircles();
+        drawLegend();
         
-        drawCircles()
-        d3.select("#selectButton").on("change", selectionChanged)
+        //initialize select button, and fire update function when changed
+        d3.select("#selectButton")
+            .on("change", selectionChanged);
 
 
-        //draws all circles
+        //function that draws al circles with the data
         function drawCircles(){
             g.selectAll('circle')
             .data(result)
@@ -145,7 +139,7 @@ function renderGraph(result){
                 .append('circle')
                     .attr('cy', d => yScale(yValue(d)))
                     .attr('cx', d => xScale(xValue(d)))
-                    .attr('r', 15)
+                    .attr('r', 0)
                     .classed('classnaam', true)
                     .style('fill', d => { return color(d.type) } )
                     .on("mousemove", function(d){
@@ -155,14 +149,21 @@ function renderGraph(result){
                         .style("display", "inline-block")
                         .html((d.origin) + "<br>" +d.type +": " + (d.amount));
                         })
-                        .on("mouseout", function(){ tooltip.style("display", "none");})
+                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
+                        .attr("r", 15)
                     }
 
-        //chazz helped me with the update function
+        //The update function, chazz helped me with the update function
         function selectionChanged() {
-            console.log(result);
             
-            let dataFilter = result.filter(d => {return d.type == this.value})
+            let dataFilter = result.filter(d => {
+                //if toon alles is selected return every type
+                if(this.value == 'toon alles'){
+                    return d.type
+                }
+                //otherwise only return the chosen type
+                else {return d.type == this.value}
+            })
 
             // g = append("g").attr(etc)
         
@@ -172,7 +173,7 @@ function renderGraph(result){
             .append("circle")
                     .attr('cy', d => yScale(yValue(d)))
                     .attr('cx', d => xScale(xValue(d)))
-                    .attr('r', 15)
+                    .attr('r', 0)
                     .classed('classnaam', true)
                     .style('fill', d => { return color(d.type) } )
                     .on("mousemove", function(d){
@@ -182,17 +183,24 @@ function renderGraph(result){
                         .style("display", "inline-block")
                         .html((d.origin) + "<br>" +d.type +": " + (d.amount));
                         })
-                        .on("mouseout", function(){ tooltip.style("display", "none");})
+                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
+                        .attr("r", 15)
+                    
             
             circle.attr('cy', d => yScale(yValue(d)))
             .attr('cx', d => xScale(xValue(d)))
-            .attr('r', 15)
+            .attr('r', 0)
             .style('fill', d => { return color(d.type) } )
+            .transition().duration(1000).attr("r", 15)
+            
             //remove unnecesary circles
-            circle.exit().remove()
-        
+            circle.exit().transition().duration(1000).attr("r", 0).remove()
+    
+            
         }
         
+        function drawLegend(){
+
         //got his piece of code from Ramon, who got it from Laurens' code at https://beta.vizhub.com/Razpudding/921ee6d44b634067a2649f738b6a3a6e
         const legend = svg.selectAll(".legend")
                 .data(color.domain())
@@ -219,4 +227,6 @@ function renderGraph(result){
         g.append('text')
             .attr('y', -10)
               .text('Aantal rookgerei naar type en continent')
+
+            }
 }

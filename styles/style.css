@@ -22,7 +22,11 @@
   text{
   
     font-size: 2em;
-    font-family: sans-serif
+    font-family: sans-serif;
+  }
+
+  h4{
+      font-family: sans-serif;
   }
 
   .legend text{
@@ -53,5 +57,13 @@
   select{
     display: flex;
     justify-content: flex-end;
+    background-color: beige;
+    font-size: 1.3rem;
+    color: black;
+    border: none;
+  }
+
+  .filter{
+      
   }
 
