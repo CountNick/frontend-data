@@ -6,13 +6,62 @@
 ## Table of contents 
 
 * ### [_Concept_](#Concept)
+* ### [_General update pattern_](#General_update_pattern)
 * ### [_Data_](#Data)
 * ### [_Installation_](#Installation)
 
 
 ## Concept :pencil2:
 
-The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki
+The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki. The chart features a filter function:
+
+[![Image from Gyazo](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
+
+## General update pattern
+<details>
+```javascript
+
+        function selectionChanged() {
+            
+            let dataFilter = result.filter(d => {
+                if(this.value == 'toon alles'){
+                    return d.type
+                }
+                else return d.type == this.value})
+
+            // g = append("g").attr(etc)
+        
+            const circle = g.selectAll('circle').data(dataFilter)
+
+            circle.enter()
+            .append("circle")
+                    .attr('cy', d => yScale(yValue(d)))
+                    .attr('cx', d => xScale(xValue(d)))
+                    .attr('r', 15)
+                    .classed('classnaam', true)
+                    .style('fill', d => { return color(d.type) } )
+                    .on("mousemove", function(d){
+                        tooltip
+                        .style("left", d3.event.pageX - 50 + "px")
+                        .style("top", d3.event.pageY - 80 + "px")
+                        .style("display", "inline-block")
+                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                        })
+                        .on("mouseout", function(){ tooltip.style("display", "none");})
+                    
+            
+            circle.attr('cy', d => yScale(yValue(d)))
+            .attr('cx', d => xScale(xValue(d)))
+            .attr('r', 15)
+            .style('fill', d => { return color(d.type) } )
+            //.transition().duration(300).style('opacity', 1)
+            
+            //remove unnecesary circles
+            circle.exit().remove()
+        }
+
+```
+</details>
 
 ## Data
 
