@@ -1,7 +1,8 @@
 # frontend-data📊
-## [ _Check the live demo out here_](https://countnick.github.io/frontend-data/)
+
 
 [![Image from Gyazo](https://i.gyazo.com/218222d8ff1cc7f9ca175998606e991a.gif)](https://gyazo.com/218222d8ff1cc7f9ca175998606e991a)
+#### [ _Checkout the live demo_](https://countnick.github.io/frontend-data/)
 
 ## Table of contents 
 
@@ -18,10 +19,8 @@ The concept is a scattorplot which actually is a barchart that visualizes the am
 [![Image from Gyazo](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
 ## General update pattern
+
 ```javascript
-<details>
-
-
         function selectionChanged() {
             
             let dataFilter = result.filter(d => {
@@ -60,9 +59,8 @@ The concept is a scattorplot which actually is a barchart that visualizes the am
             //remove unnecesary circles
             circle.exit().remove()
         }
-
 ```
-</details>
+
 
 ## Data
 
