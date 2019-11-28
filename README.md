@@ -6,19 +6,26 @@
 
 ## Table of contents 
 
-* ### [_Concept_](#Concept)
-* ### [_General update pattern_](#General_update_pattern)
-* ### [_Data_](#Data)
+* ### [_Concept_](#concept-pencil2)
+* ### [_General update pattern_](#general-update-pattern-1)
+* ### [_Data_](#data-1)
 * ### [_Installation_](#Installation)
+* ### [_Acknowledgements_](#Acknowledgements)
 
 
 ## Concept :pencil2:
 
-The concept is a scattorplot which actually is a barchart that visualizes the amounts of smoke pipes that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole concept checkout the project Wiki. The chart features a filter function:
+The concept is a scattorplot which visualizes the amounts of smoking tools that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole [concept](https://github.com/CountNick/frontend-data/wiki/2.3-Concept) and my [ideation proces](https://github.com/CountNick/frontend-data/wiki/2.2-Ideation) checkout the project Wiki. The chart features a filter function:
 
 [![Filtering](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
+### Target audience 
+
+The first thing people usually think about when you say Amsterdam is smoking weed. The target audience for the visualisation will be tourists and students aged 18-25. I want to reach this audience because the usual audience for the museum are grandparents with kids. I think this subject might attract some of those other people the museum wants to reach.
+
 ## General update pattern
+
+In order to get the filter function working i had to write a update pattern. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
 
 ```javascript
         function selectionChanged() {
@@ -62,11 +69,13 @@ The concept is a scattorplot which actually is a barchart that visualizes the am
 ```
 
 
+
 ## Data
 
-To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent.
-
+To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Feel free to check the query out by clicking details open:
 I made use of the follwing query, which i tweaked from one of Ivo's examples:
+<details>
+
 
 ```
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -96,6 +105,7 @@ WHERE {
   
 } 
 ```
+</details>
 
 ## Installation :cd:
 
@@ -109,3 +119,9 @@ You will need the following things properly installed on your computer.
 * `git clone https://github.com/CountNick/functional-programming.git`
 
 Open the index.html file in your browser to see the project
+
+## Acknowledgements
+
+* Chazz() for helping me debug the update pattern
+* Eyob()
+* Laurens() for general 
