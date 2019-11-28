@@ -158,6 +158,7 @@ function renderGraph(result){
         //The update function, chazz helped me with the update function
         function selectionChanged() {
             
+
             let dataFilter = result.filter(d => {
                 //if toon alles is selected return every type
                 if(this.value == 'toon alles'){
@@ -187,17 +188,18 @@ function renderGraph(result){
                         })
                         .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
                         .attr("r", 15)
-                    
             
-            circle.attr('cy', d => yScale(yValue(d)))
-            .attr('cx', d => xScale(xValue(d)))
-            .attr('r', 0)
+            
+            
+            
+            circle
+            .attr('cy', d => yScale(yValue(d))).transition().duration(1000)
+            .attr('cx', d => xScale(xValue(d))).transition().duration(1000)
             .style('fill', d => { return color(d.type) } )
-            .transition().duration(1000).attr("r", 15)
             
+
             //remove unnecesary circles
             circle.exit().transition().duration(1000).attr("r", 0).remove()
-    
             
         }
         
