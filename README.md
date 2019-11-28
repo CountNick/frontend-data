@@ -25,21 +25,21 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 
 ## General update pattern
 
-In order to get the filter function working i had to write a update pattern. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
+In order to get the filter function working i had to write an update pattern. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
 
 ```javascript
         function selectionChanged() {
-            
+            //checks which value is chosen
             let dataFilter = result.filter(d => {
                 if(this.value == 'toon alles'){
                     return d.type
                 }
                 else return d.type == this.value})
 
-            // g = append("g").attr(etc)
-        
+            
+            //select al circles
             const circle = g.selectAll('circle').data(dataFilter)
-
+            //append circles that are needed
             circle.enter()
             .append("circle")
                     .attr('cy', d => yScale(yValue(d)))
@@ -56,7 +56,7 @@ In order to get the filter function working i had to write a update pattern. You
                         })
                         .on("mouseout", function(){ tooltip.style("display", "none");})
                     
-            
+            //set reusable circles to the right coordinates
             circle.attr('cy', d => yScale(yValue(d)))
             .attr('cx', d => xScale(xValue(d)))
             .attr('r', 15)

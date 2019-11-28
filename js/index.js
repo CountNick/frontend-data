@@ -105,10 +105,11 @@ function renderGraph(data){
             .call(d3.axisBottom(xScale)
                 .tickSize(-innerHeight))
               .attr('transform', `translate(0, ${innerHeight})`)
+              
             .append('text')
               .attr('y', 60)
               .attr('x', innerWidth / 2)
-              .attr('fill', 'black')
+              .attr('fill', 'white')
               .text('Aantal pijpen');
 
         //draw the circles on the chart
@@ -205,11 +206,12 @@ function renderGraph(data){
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
                 .text( d => { return d; })
+                .attr('fill', 'white')
     
         //sets the graph title
         g.append('text')
             .attr('y', -10)
               .text('Aantal rookgerei naar type en continent')
-
+            .attr('fill', 'white')
             }
 }
