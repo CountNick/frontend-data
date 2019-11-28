@@ -9,8 +9,8 @@
 * ### [_Concept_](#concept-pencil2)
 * ### [_General update pattern_](#general-update-pattern-1)
 * ### [_Data_](#data-1)
-* ### [_Installation_](#Installation)
-* ### [_Acknowledgements_](#Acknowledgements)
+* ### [_Installation_](#installation-cd)
+* ### [_Acknowledgements_](#acknowledgements-1)
 
 
 ## Concept :pencil2:
