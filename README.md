@@ -102,7 +102,7 @@ WHERE {
   
 } 
 ```
-
+</details>
 ## Installation :cd:
 
 ### Prerequisites
