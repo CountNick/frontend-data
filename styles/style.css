@@ -1,7 +1,13 @@
+body{
 
+    margin-top: 2rem;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,45,116,1) 100%);
+}
+   
    circle {
   
-    stroke: black;
+    stroke: white;
     opacity: 0.5;
     -webkit-transition: opacity .15s ease-in-out;
     -moz-transition: opacity .15s ease-in-out;
@@ -19,14 +25,11 @@
       transition: opacity .15s ease-in-out;
   }
   
-  text{
-  
-    font-size: 2em;
-    font-family: sans-serif;
-  }
 
-  h4{
+  h4, p{
       font-family: sans-serif;
+      color: white;
+      margin-left: 1rem;
   }
 
   .legend text{
@@ -61,6 +64,7 @@
     font-size: 1.3rem;
     color: black;
     border: none;
+    margin-left: 1rem;
   }
 
   .filter{
@@ -68,8 +72,28 @@
   }
 
   .filter div{
-      /* background-color: black;
+      background-color: black;
       border-radius: .2rem;
-      width: 19rem; */
+      width: 20%;
+      height: 23rem;
+      margin-top: 5%;
   }
 
+div p{
+    color: white;
+    padding-right: 1rem;
+}
+
+line{
+    color:white
+}
+
+text{
+    color: white !important;
+    font-size: 2em;
+    font-family: sans-serif;
+  }
+
+  .domain{
+      color: white;
+  }
