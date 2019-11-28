@@ -108,6 +108,8 @@ function renderGraph(result){
         g.append('g')
             .call(d3.axisLeft(yScale)
                 .tickSize(-innerWidth))
+            .select('.domain')
+            .remove()
               .append('text')
               .attr('fill', 'black');
       
@@ -211,13 +213,13 @@ function renderGraph(result){
                     console.log(d)
                 });
                 legend.append("rect")
-                .attr("x", innerWidth /3)
+                .attr("x", 650 + innerWidth /3)
                 .attr('y', innerHeight+70)
                 .attr("width", 18)
                 .attr("height", 18)
                 .style("fill", color)
                 legend.append("text")
-                .attr("x", innerWidth / 3)
+                .attr("x", 650 + innerWidth / 3)
                 .attr("y", innerHeight +79)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
