@@ -70,9 +70,9 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 ## Data
 
 To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Feel free to check the query out by clicking details open:
-
-<detail>
 I made use of the follwing query, which i tweaked from one of Ivo's examples:
+<details open>
+
 
 ```
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -102,7 +102,7 @@ WHERE {
   
 } 
 ```
-<detail>
+<details>
 
 ## Installation :cd:
 
