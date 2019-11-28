@@ -10,6 +10,7 @@
 * ### [_General update pattern_](#General_update_pattern)
 * ### [_Data_](#Data)
 * ### [_Installation_](#Installation)
+* ### [_Acknowledgements_](#Acknowledgements)
 
 
 ## Concept :pencil2:
@@ -68,8 +69,9 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 
 ## Data
 
-To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent.
+To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Feel free to check the query out by clicking details open:
 
+<detail>
 I made use of the follwing query, which i tweaked from one of Ivo's examples:
 
 ```
@@ -100,6 +102,7 @@ WHERE {
   
 } 
 ```
+<detail>
 
 ## Installation :cd:
 
@@ -113,3 +116,9 @@ You will need the following things properly installed on your computer.
 * `git clone https://github.com/CountNick/functional-programming.git`
 
 Open the index.html file in your browser to see the project
+
+## Acknowledgements
+
+* Chazz() for helping me debug the update pattern
+* Eyob()
+* Laurens() for general 
