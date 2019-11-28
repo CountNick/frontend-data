@@ -82,7 +82,7 @@ Open the index.html file in your browser to see the project
 
 ## Acknowledgements
 
-* Chazz(https://github.com/Chazzers) for helping me debug the update pattern
-* Eyob(https://github.com/EyobDejene) for trying to help with my d3 nest problem
-* Laurens(https://github.com/Razpudding) for trying to help with my d3 nest problem
-* Robert(https://github.com/robert-hoekstra) for trying to help with my d3 nest problem
+* [Chazz](https://github.com/Chazzers) for helping me debug the update pattern
+* [Eyob](https://github.com/EyobDejene) for trying to help with my d3 nest problem
+* [Laurens](https://github.com/Razpudding) for trying to help with my d3 nest problem
+* [Robert](https://github.com/robert-hoekstra) for trying to help with my d3 nest problem
