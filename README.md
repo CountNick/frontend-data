@@ -18,6 +18,10 @@ The concept is a scattorplot which actually is a barchart that visualizes the am
 
 [![Filtering](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
+### Target audience 
+
+The first thing people usually think about when you say Amsterdam is smoking weed. The target audience for the visualisation will be tourists and students aged 18-25. I want to reach this audience because the usual audience for the museum are grandparents with kids. I think this subject might attract some of those other people the museum wants to reach.
+
 ## General update pattern
 
 ```javascript
