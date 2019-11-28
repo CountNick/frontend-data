@@ -1,7 +1,7 @@
 # frontend-data📊
 
 
-[![Hovering](https://i.gyazo.com/218222d8ff1cc7f9ca175998606e991a.gif)](https://gyazo.com/218222d8ff1cc7f9ca175998606e991a)
+[![Hovering](https://i.gyazo.com/c60b89d8a66bf9ec1ee9d5b310c7d456.gif)](https://gyazo.com/c60b89d8a66bf9ec1ee9d5b310c7d456)
 #### [ _Checkout the live demo_](https://countnick.github.io/frontend-data/)
 
 ## Table of contents 
@@ -15,12 +15,10 @@
 
 ## Concept :pencil2:
 
-The concept is a scattorplot which visualizes the amounts of smoking tools that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole [concept](https://github.com/CountNick/frontend-data/wiki/2.3-Concept) and my [ideation proces](https://github.com/CountNick/frontend-data/wiki/2.2-Ideation) checkout the project Wiki. The chart features a filter function:
-
-[![Filtering](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
-
+The concept is a scattorplot which visualizes the amounts of smoking tools that are in the collection of the museums and are grouped by cultural heritage. If you want to read through my whole [concept](https://github.com/CountNick/frontend-data/wiki/2.3-Concept) and my [ideation proces](https://github.com/CountNick/frontend-data/wiki/2.2-Ideation) checkout the project Wiki.
+Early sketch of my concept:
 [![sketch](https://i.imgur.com/gULvTyB.jpg)](https://i.imgur.com/gULvTyB.jpg)
-Early sketch of my concept
+
 
 ### Target audience 
 
@@ -29,6 +27,8 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 ## General update pattern
 
 In order to get the filter function working i had to write an update pattern. When the user clicks makes a change on the filter dropdown, the selected value is being compared with the data. The filter function only returns the types of smoking pipes that have been chosen. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
+
+[![Filtering](https://i.gyazo.com/8e4f52512034795f09372c1eea937d58.gif)](https://gyazo.com/8e4f52512034795f09372c1eea937d58)
 
 
 ## Data
