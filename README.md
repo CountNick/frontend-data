@@ -6,9 +6,9 @@
 
 ## Table of contents 
 
-* ### [_Concept_](#Concept)
-* ### [_General update pattern_](#General_update_pattern)
-* ### [_Data_](#Data)
+* ### [_Concept_](#concept-pencil2)
+* ### [_General update pattern_](#general-update-pattern-1)
+* ### [_Data_](#data-1)
 * ### [_Installation_](#Installation)
 * ### [_Acknowledgements_](#Acknowledgements)
 
@@ -71,7 +71,7 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 
 To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Feel free to check the query out by clicking details open:
 I made use of the follwing query, which i tweaked from one of Ivo's examples:
-<details open>
+<details>
 
 
 ```
@@ -102,7 +102,6 @@ WHERE {
   
 } 
 ```
-<details>
 
 ## Installation :cd:
 
