@@ -19,61 +19,21 @@ The concept is a scattorplot which visualizes the amounts of smoking tools that 
 
 [![Filtering](https://i.gyazo.com/7609624c2e21e883e511791527547860.gif)](https://gyazo.com/7609624c2e21e883e511791527547860)
 
+[![sketch](https://i.imgur.com/gULvTyB.jpg)](https://i.imgur.com/gULvTyB.jpg)
+Early sketch of my concept
+
 ### Target audience 
 
 The first thing people usually think about when you say Amsterdam is smoking weed. The target audience for the visualisation will be tourists and students aged 18-25. I want to reach this audience because the usual audience for the museum are grandparents with kids. I think this subject might attract some of those other people the museum wants to reach.
 
 ## General update pattern
 
-In order to get the filter function working i had to write an update pattern. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
-
-```javascript
-        function selectionChanged() {
-            //checks which value is chosen
-            let dataFilter = result.filter(d => {
-                if(this.value == 'toon alles'){
-                    return d.type
-                }
-                else return d.type == this.value})
-
-            
-            //select al circles
-            const circle = g.selectAll('circle').data(dataFilter)
-            //append circles that are needed
-            circle.enter()
-            .append("circle")
-                    .attr('cy', d => yScale(yValue(d)))
-                    .attr('cx', d => xScale(xValue(d)))
-                    .attr('r', 15)
-                    .classed('classnaam', true)
-                    .style('fill', d => { return color(d.type) } )
-                    .on("mousemove", function(d){
-                        tooltip
-                        .style("left", d3.event.pageX - 50 + "px")
-                        .style("top", d3.event.pageY - 80 + "px")
-                        .style("display", "inline-block")
-                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
-                        })
-                        .on("mouseout", function(){ tooltip.style("display", "none");})
-                    
-            //set reusable circles to the right coordinates
-            circle.attr('cy', d => yScale(yValue(d)))
-            .attr('cx', d => xScale(xValue(d)))
-            .attr('r', 15)
-            .style('fill', d => { return color(d.type) } )
-            //.transition().duration(300).style('opacity', 1)
-            
-            //remove unnecesary circles
-            circle.exit().remove()
-        }
-```
-
+In order to get the filter function working i had to write an update pattern. When the user clicks makes a change on the filter dropdown, the selected value is being compared with the data. The filter function only returns the types of smoking pipes that have been chosen. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
 
 
 ## Data
 
-To realise this visualisation i needed to get every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Feel free to check the query out by clicking details open:
-I made use of the follwing query, which i tweaked from one of Ivo's examples:
+To realise this visualisation i needed to fetch every continent, every type of smoking tool and the amount of each smoking tool from each continent. I realised this with a query that gets these things out of the database. Luckily i didn't get any extreme values out of this query. Ofcourse some values are way higher than others, but the visualisation is able to show the difference between these values. Also when the user filters on a type, the dots move to the place they need to be at. This movement is to compare the sometimes extreme values to those of the selection that came before. Feel free to check the query out by clicking details open I tweaked this query from one of Ivo's examples:
 <details>
 
 
