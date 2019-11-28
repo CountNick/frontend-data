@@ -25,6 +25,8 @@ The first thing people usually think about when you say Amsterdam is smoking wee
 
 ## General update pattern
 
+In order to get the filter function working i had to write a update pattern. You can read more about my update pattern in [the project wiki](https://github.com/CountNick/frontend-data/wiki/3.4-Implementing-the-update-pattern)
+
 ```javascript
         function selectionChanged() {
             
@@ -65,6 +67,7 @@ The first thing people usually think about when you say Amsterdam is smoking wee
             circle.exit().remove()
         }
 ```
+
 
 
 ## Data
