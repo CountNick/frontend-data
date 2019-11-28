@@ -39,36 +39,25 @@ d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
         return data
     })
     .then(data => transformData(data))
-    .then(transformData => nestData(transformData))
-    .then(nestData => renderGraph(nestData))
+    .then(transformData => renderGraph(transformData))
 
 function transformData(data){
         //map over data objects and make new array filled with modified objects
-    const objectsArray = data
+    const cleanedData = data
         .map(object => {
-            
+            //returns the values of each object in new key
             return{
-
             origin: object.herkomstSuperLabel.value,
             type: object.typeLabel.value,
             amount: parseInt(object.amount.value)
-
             }
         })
-
-        return objectsArray
+        return cleanedData
 }
 
-function nestData(objectsArray){
-
-    let nestedData = d3.nest()
-    .key(continent => { return continent.origin })
-    .entries(objectsArray);
-    
-    return objectsArray
-}
-
-function renderGraph(result){
+//I used the barchart tutotrial by Curran to first make a barchart: https://www.youtube.com/watch?v=NlBt-7PuaLk
+//Then i set the bars to circles using this tutotial by Curran: https://www.youtube.com/watch?v=M2s2jowLkUo&t=692s
+function renderGraph(data){
 
         //select the svg element in index.html
         const svg = d3.select('svg');
@@ -89,20 +78,18 @@ function renderGraph(result){
 
         //sets the xScale with the values from d.amount
         const xScale = d3.scaleLinear()
-            .domain([0, d3.max(result, xValue)])
+            .domain([0, d3.max(data, xValue)])
             .range([0, innerWidth])
             .nice();
 
         //for plotting the dots on the yaxis
         const yScale = d3.scalePoint()
-            .domain(result.map(yValue))
+            .domain(data.map(yValue))
             .range([0, innerHeight])
             .padding(0.7);
-      
-      
+            
         const g = svg.append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
-          
 
         //sets the y axis
         g.append('g')
@@ -132,11 +119,10 @@ function renderGraph(result){
         d3.select("#selectButton")
             .on("change", selectionChanged);
 
-
-        //function that draws al circles with the data
+        //function that draws all circles with the data
         function drawCircles(){
             g.selectAll('circle')
-            .data(result)
+            .data(data)
             .enter()
                 .append('circle')
                     .attr('cy', d => yScale(yValue(d)))
@@ -156,10 +142,10 @@ function renderGraph(result){
                     }
 
         //The update function, chazz helped me with the update function
+        //Checked Laurens' example for this function: https://vizhub.com/Razpudding/4a61de4a4034423a98ae79d0135781f7
         function selectionChanged() {
             
-
-            let dataFilter = result.filter(d => {
+            let dataFilter = data.filter(d => {
                 //if toon alles is selected return every type
                 if(this.value == 'toon alles'){
                     return d.type
@@ -189,15 +175,12 @@ function renderGraph(result){
                         .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
                         .attr("r", 15)
             
-            
-            
-            
             circle
-            .attr('cy', d => yScale(yValue(d))).transition().duration(1000)
-            .attr('cx', d => xScale(xValue(d))).transition().duration(1000)
+            .transition().duration(1000)
+            .attr('cy', d => yScale(yValue(d)))
+            .attr('cx', d => xScale(xValue(d)))
             .style('fill', d => { return color(d.type) } )
             
-
             //remove unnecesary circles
             circle.exit().transition().duration(1000).attr("r", 0).remove()
             
@@ -211,18 +194,14 @@ function renderGraph(result){
                 .enter().append("g")
                 .attr("class", "legend")
                 .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; })
-                .on("mouseenter", d => {
-                    console.log(d)
-                });
-                legend.append("rect")
-                .attr("x", 650 + innerWidth /3)
-                .attr('y', innerHeight+70)
-                .attr("width", 18)
-                .attr("height", 18)
+                legend.append("circle")
+                .attr("cx", 650 + innerWidth /3)
+                .attr('cy', innerHeight+70)
+                .attr("r", 8)
                 .style("fill", color)
                 legend.append("text")
-                .attr("x", 650 + innerWidth / 3)
-                .attr("y", innerHeight +79)
+                .attr("x", 630 + innerWidth / 3)
+                .attr("y", innerHeight +70)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
                 .text( d => { return d; })
