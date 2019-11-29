@@ -31,6 +31,7 @@ WHERE {
 `
 
 // fetch data from endpoint
+//Resource promises: https://www.youtube.com/watch?v=DHvZLI7Db8E&t=349s
 d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
     .then(json => {
         // put fetch results in variable
@@ -42,7 +43,7 @@ d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
     .then(transformData => renderGraph(transformData))
 
 function transformData(data){
-        //map over data objects and make new array filled with modified objects
+    //map over data objects and make new array filled with modified objects
     const cleanedData = data
         .map(object => {
             //returns the values of each object in new key
@@ -72,10 +73,10 @@ function renderGraph(data){
         const innerHeight = height - margin.top - margin.bottom;
         //makes an ordinal color scale for each type
         const color = d3.scaleOrdinal()
-            .domain(["hasjpijpen", "tabakspijpen", "waterpijpen", "pijpen (rookgerei)", "opiumpijpen" ])
-            .range([ "#FF0047", "#FF8600", "#6663D5", "#FFF800", "#29FF3E"]);
-        const tooltip = d3.select("body").append("div").attr("class", "toolTip");
-
+            .domain(['hasjpijpen', 'tabakspijpen', 'waterpijpen', 'pijpen (rookgerei)', 'opiumpijpen' ])
+            .range([ '#FF0047', '#FF8600', '#6663D5', '#FFF800', '#29FF3E']);
+        const tooltip = d3.select('body').append('div').attr('class', 'toolTip');
+        
         //sets the xScale with the values from d.amount
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(data, xValue)])
@@ -114,13 +115,14 @@ function renderGraph(data){
 
         //draw the circles on the chart
         drawCircles();
+        //draw the legend 
         drawLegend();
         
         //initialize select button, and fire update function when changed
-        d3.select("#selectButton")
-            .on("change", selectionChanged);
+        d3.select('#selectButton')
+            .on('change', selectionChanged);
 
-        //function that draws all circles with the data
+        //function that draws all circles with the data, this function gets invoked when renderGraph gets invoked
         function drawCircles(){
             g.selectAll('circle')
             .data(data)
@@ -131,15 +133,15 @@ function renderGraph(data){
                     .attr('r', 0)
                     .classed('classnaam', true)
                     .style('fill', d => { return color(d.type) } )
-                    .on("mousemove", function(d){
+                    .on('mousemove', function(d){
                         tooltip
-                        .style("left", d3.event.pageX - 50 + "px")
-                        .style("top", d3.event.pageY - 80 + "px")
-                        .style("display", "inline-block")
-                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                        .style('left', d3.event.pageX - 50 + 'px')
+                        .style('top', d3.event.pageY - 80 + 'px')
+                        .style('display', 'inline-block')
+                        .html((d.origin) + '<br>' +d.type +': ' + (d.amount));
                         })
-                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
-                        .attr("r", 15)
+                        .on('mouseout', function(){ tooltip.style('display', 'none');}).transition().duration(1000)
+                        .attr('r', 15)
                     }
 
         //The update function, chazz helped me with the update function
@@ -160,22 +162,22 @@ function renderGraph(data){
             const circle = g.selectAll('circle').data(dataFilter)
 
             circle.enter()
-            .append("circle")
+            .append('circle')
                     .attr('cy', d => yScale(yValue(d)))
                     .attr('cx', d => xScale(xValue(d)))
                     .attr('r', 0)
                     .classed('classnaam', true)
                     .style('fill', d => { return color(d.type) } )
-                    .on("mousemove", function(d){
+                    .on('mousemove', function(d){
                         tooltip
-                        .style("left", d3.event.pageX - 50 + "px")
-                        .style("top", d3.event.pageY - 80 + "px")
-                        .style("display", "inline-block")
-                        .html((d.origin) + "<br>" +d.type +": " + (d.amount));
+                        .style('left', d3.event.pageX - 50 + 'px')
+                        .style('top', d3.event.pageY - 80 + 'px')
+                        .style('display', 'inline-block')
+                        .html((d.origin) + '<br>' +d.type +': ' + (d.amount));
                         })
-                        .on("mouseout", function(){ tooltip.style("display", "none");}).transition().duration(1000)
-                        .attr("r", 15)
-            
+                        .on('mouseout', function(){ tooltip.style('display', 'none');}).transition().duration(1000)
+                        .attr('r', 15)
+            //relocate the circles that don't need to be removed
             circle
             .transition().duration(1000)
             .attr('cy', d => yScale(yValue(d)))
@@ -183,28 +185,27 @@ function renderGraph(data){
             .style('fill', d => { return color(d.type) } )
             
             //remove unnecesary circles
-            circle.exit().transition().duration(1000).attr("r", 0).remove()
-            
+            circle.exit().transition().duration(1000).attr('r', 0).remove()
         }
-        
+        //function to draw the legend
         function drawLegend(){
 
         //got his piece of code from Ramon, who got it from Laurens' code at https://beta.vizhub.com/Razpudding/921ee6d44b634067a2649f738b6a3a6e
-        const legend = svg.selectAll(".legend")
+        const legend = svg.selectAll('.legend')
                 .data(color.domain())
-                .enter().append("g")
-                .attr("class", "legend")
-                .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; })
-                legend.append("circle")
-                .attr("cx", 650 + innerWidth /3)
+                .enter().append('g')
+                .attr('class', 'legend')
+                .attr('transform', function(d, i) { return 'translate(0,' + i * 20 + ')'; })
+                legend.append('circle')
+                .attr('cx', 650 + innerWidth /3)
                 .attr('cy', innerHeight+70)
-                .attr("r", 8)
-                .style("fill", color)
-                legend.append("text")
-                .attr("x", 630 + innerWidth / 3)
-                .attr("y", innerHeight +70)
-                .attr("dy", ".35em")
-                .style("text-anchor", "end")
+                .attr('r', 8)
+                .style('fill', color)
+                legend.append('text')
+                .attr('x', 630 + innerWidth / 3)
+                .attr('y', innerHeight +70)
+                .attr('dy', '.35em')
+                .style('text-anchor', 'end')
                 .text( d => { return d; })
                 .attr('fill', 'white')
     

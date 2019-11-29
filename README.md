@@ -86,3 +86,8 @@ Open the index.html file in your browser to see the project
 * [Eyob](https://github.com/EyobDejene) for trying to help with my d3 nest problem
 * [Laurens](https://github.com/Razpudding) for trying to help with my d3 nest problem
 * [Robert](https://github.com/robert-hoekstra) for trying to help with my d3 nest problem
+
+## Resources
+
+* [Ordinal scatterplot](https://vizhub.com/curran/a9ec621b1c36439aa2a65e0c28462d7a)
+* [Barchart](https://vizhub.com/curran/a44b38541b6e47a4afdd2dfe67a302c5)
