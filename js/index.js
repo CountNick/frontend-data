@@ -31,7 +31,7 @@ WHERE {
 `
 
 // fetch data from endpoint
-//Resource promises: https://www.youtube.com/watch?v=DHvZLI7Db8E&t=349s
+//Resource promises: https://www.youtube.com/watch?v=DHvZLI7Db8E&t=349s, https://vizhub.com/curran/a44b38541b6e47a4afdd2dfe67a302c5
 d3.json(url+"?query="+ encodeURIComponent(query) +"&format=json")
     .then(json => {
         // put fetch results in variable
@@ -57,7 +57,7 @@ function transformData(data){
 }
 
 //I used the barchart tutotrial by Curran to first make a barchart: https://www.youtube.com/watch?v=NlBt-7PuaLk
-//Then i set the bars to circles using this tutotial by Curran: https://www.youtube.com/watch?v=M2s2jowLkUo&t=692s
+//Then i set the bars to circles using this tutotial by Curran: https://www.youtube.com/watch?v=M2s2jowLkUo&t=692s, https://vizhub.com/curran/a9ec621b1c36439aa2a65e0c28462d7a
 function renderGraph(data){
 
         //select the svg element in index.html
